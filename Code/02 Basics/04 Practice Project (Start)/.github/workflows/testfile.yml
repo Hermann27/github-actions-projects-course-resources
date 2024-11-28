@@ -1,0 +1,46 @@
+name: Tesing Scripts[Link, Test,Build and Deploy]
+on: push
+jobs:
+  Testing-Link:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Code
+        uses: actions/checkout@v4
+      - name: Install NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install dependecies
+        run: npm ci
+      - name: Run Link
+        run: npm link
+  Testing-test:
+    needs: Testing-Link
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Code
+        uses: actions/checkout@v4
+      - name: Install NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install dependecies
+        run: npm ci
+      - name: Run Test
+        run: npm test
+  Deploy:
+    needs: Testing-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Code
+        uses: actions/checkout@v4
+      - name: Install NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install dependecies
+        run: npm ci
+      - name: Build Project
+        run: npm run build
+      - name: Deploy
+        run: echo "Deploying ..."
